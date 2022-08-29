@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"errors"
 	"github.com/labstack/echo/v4"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"net/http"
@@ -13,7 +14,7 @@ func CreateDepartment(c echo.Context) error {
 	ctx := c.Request().Context()
 	var payload, ok = c.Get("payload").(payload.DepartmentCreatePayLoad)
 	if !ok {
-		return c.JSON(http.StatusBadRequest, "Bad Request")
+		return c.JSON(http.StatusBadRequest, error.Error(errors.New("Bad Request")))
 	}
 
 	createdDepartment, err := service.CreateDepartment(ctx, payload)
@@ -29,7 +30,7 @@ func UpdateDepartment(c echo.Context) error {
 	var ID, _ = primitive.ObjectIDFromHex(c.Param("id"))
 	var payload, ok = c.Get("payload").(payload.DepartmentCreatePayLoad)
 	if !ok {
-		return c.JSON(http.StatusBadRequest, "Bad Request")
+		return c.JSON(http.StatusBadRequest, error.Error(errors.New("Bad Request")))
 	}
 
 	updatedDepartment, err := service.UpdateDepartment(ctx, ID, payload)
@@ -49,7 +50,7 @@ func DeleteDepartment(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, err)
 	}
 
-	return c.JSON(http.StatusNoContent, "Delete Department successfully")
+	return c.JSON(http.StatusNoContent, error.Error(errors.New("Delete Department successfully")))
 }
 
 func GetDepartment(c echo.Context) error {
@@ -69,7 +70,7 @@ func GetAllDepartment(c echo.Context) error {
 	ctx := c.Request().Context()
 	query, ok := c.Get("query").(query.DepartmentFindAllQuery)
 	if !ok {
-		return c.JSON(http.StatusBadRequest, "Bad Request")
+		return c.JSON(http.StatusBadRequest, error.Error(errors.New("Bad Request")))
 	}
 
 	pagedDepartment, err := service.GetAllDepartment(ctx, query)

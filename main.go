@@ -11,7 +11,9 @@ import (
 func main() {
 	e := echo.New()
 	config.InitDotEnv()
-	e.Use(middleware.Logger())
+	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
+		Format: "method=${method}, uri=${uri}, status=${status}\n",
+	}))
 	e.Use(middleware.Recover())
 	e.Use(middleware.CORS())
 

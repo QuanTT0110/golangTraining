@@ -18,7 +18,7 @@ func CreateStaff(next echo.HandlerFunc) echo.HandlerFunc {
 		)
 
 		c.Bind(&payload)
-
+		fmt.Println(payload)
 		err := payload.ValidateCreateStaff()
 
 		if err != nil {
@@ -38,12 +38,12 @@ func StaffQuery(next echo.HandlerFunc) echo.HandlerFunc {
 
 		err := c.Bind(&query)
 		if err != nil {
-			c.JSON(http.StatusBadRequest, errors.New("Invalid input"))
+			c.JSON(http.StatusBadRequest, error.Error(errors.New("Invalid input")))
 		}
 
 		err = query.ValidateStaffQuery()
 		if err != nil {
-			c.JSON(http.StatusBadRequest, errors.New("Invalid input"))
+			c.JSON(http.StatusBadRequest, error.Error(errors.New("Invalid input")))
 		}
 
 		c.Set("query", query)
@@ -69,7 +69,7 @@ func ValidateStaffID(next echo.HandlerFunc) echo.HandlerFunc {
 		)
 
 		if err != nil {
-			return c.JSON(http.StatusBadRequest, errors.New("Staff ID is not valid"))
+			return c.JSON(http.StatusBadRequest, error.Error(errors.New("Staff ID is not valid")))
 		}
 
 		c.Set("staffID", staffID)
@@ -85,8 +85,8 @@ func CheckStaffExistedByID(next echo.HandlerFunc) echo.HandlerFunc {
 		)
 
 		staff, _ := dao.GetStaff(ctx, staffID)
-		if staff.ID.Hex() == "" {
-			return c.JSON(http.StatusNoContent, errors.New("Staff not found"))
+		if staff.ID.IsZero() {
+			return c.JSON(http.StatusNoContent, error.Error(errors.New("Staff not found")))
 		}
 
 		c.Set("staff", staff)
@@ -102,8 +102,9 @@ func CheckEmailExisted(next echo.HandlerFunc) echo.HandlerFunc {
 		)
 
 		staff, _ := dao.FindByEmail(ctx, email)
-		if staff.Email != "" {
-			return c.JSON(http.StatusNoContent, errors.New("Email is existing"))
+		fmt.Println(staff.ID)
+		if !staff.ID.IsZero() {
+			return c.JSON(http.StatusConflict, error.Error(errors.New("Email is existing")))
 		}
 
 		return next(c)

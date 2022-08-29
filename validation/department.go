@@ -37,7 +37,7 @@ func ValidateDepartmentID(next echo.HandlerFunc) echo.HandlerFunc {
 		)
 
 		if err != nil {
-			return c.JSON(http.StatusBadRequest, errors.New("Department ID is not valid"))
+			return c.JSON(http.StatusBadRequest, error.Error(errors.New("Department ID is not valid")))
 		}
 
 		c.Set("departmentID", departmentID)
@@ -54,7 +54,7 @@ func CheckDepartmentExistedByID(next echo.HandlerFunc) echo.HandlerFunc {
 
 		department, _ := dao.GetDepartment(ctx, departmentID)
 		if department.ID.Hex() == "" {
-			return c.JSON(http.StatusNoContent, errors.New("Department not found"))
+			return c.JSON(http.StatusNoContent, error.Error(errors.New("Department not found")))
 		}
 
 		c.Set("department", department)
@@ -70,12 +70,12 @@ func DepartmentQuery(next echo.HandlerFunc) echo.HandlerFunc {
 
 		err := c.Bind(&query)
 		if err != nil {
-			c.JSON(http.StatusBadRequest, errors.New("Invalid input"))
+			c.JSON(http.StatusBadRequest, error.Error(errors.New("Invalid input")))
 		}
 
 		err = query.ValidateDepartmentQuery()
 		if err != nil {
-			c.JSON(http.StatusBadRequest, errors.New("Invalid input"))
+			c.JSON(http.StatusBadRequest, error.Error(errors.New("Invalid input")))
 		}
 
 		c.Set("query", query)
