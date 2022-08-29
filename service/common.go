@@ -3,7 +3,6 @@ package service
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/golang-jwt/jwt"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"quanlyhoso/config"
@@ -14,9 +13,7 @@ import (
 
 func Login(ctx context.Context, login payload.LoginPayload) (res response.LoginResponse, err error) {
 	staff, err := GetStaffByEmail(ctx, login.Email)
-	fmt.Println(staff.Email)
-	fmt.Println(login.Password)
-	fmt.Println(staff.Password)
+
 	staffID, _ := primitive.ObjectIDFromHex(staff.ID)
 
 	if err != nil {

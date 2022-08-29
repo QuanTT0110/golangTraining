@@ -18,7 +18,7 @@ func CreateStaff(next echo.HandlerFunc) echo.HandlerFunc {
 		)
 
 		c.Bind(&payload)
-		fmt.Println(payload)
+
 		err := payload.ValidateCreateStaff()
 
 		if err != nil {
@@ -90,23 +90,6 @@ func CheckStaffExistedByID(next echo.HandlerFunc) echo.HandlerFunc {
 		}
 
 		c.Set("staff", staff)
-		return next(c)
-	}
-}
-
-func CheckEmailExisted(next echo.HandlerFunc) echo.HandlerFunc {
-	return func(c echo.Context) error {
-		ctx := c.Request().Context()
-		var (
-			email = c.Param("email")
-		)
-
-		staff, _ := dao.FindByEmail(ctx, email)
-		fmt.Println(staff.ID)
-		if !staff.ID.IsZero() {
-			return c.JSON(http.StatusConflict, error.Error(errors.New("Email is existing")))
-		}
-
 		return next(c)
 	}
 }

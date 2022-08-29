@@ -14,7 +14,7 @@ func Login(c echo.Context) error {
 	fmt.Println(payload)
 	result, err := service.Login(ctx, payload)
 	if err != nil {
-		return c.JSON(http.StatusUnauthorized, err)
+		return c.JSON(http.StatusUnauthorized, err.Error())
 	}
 
 	return c.JSON(http.StatusOK, result)

@@ -19,7 +19,7 @@ func CreateStaff(c echo.Context) error {
 
 	createdStaff, err := service.CreateStaff(ctx, payload)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, err)
+		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
 	return c.JSON(http.StatusCreated, createdStaff)
@@ -35,7 +35,7 @@ func UpdateStaff(c echo.Context) error {
 
 	updatedStaff, err := service.UpdateStaff(ctx, ID, payload)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, err)
+		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
 	return c.JSON(http.StatusOK, updatedStaff)
@@ -47,7 +47,7 @@ func DeleteStaff(c echo.Context) error {
 
 	err := service.DeleteStaff(ctx, ID)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, err)
+		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
 	return c.JSON(http.StatusNoContent, error.Error(errors.New("Delete staff successfully")))
@@ -59,7 +59,7 @@ func GetStaff(c echo.Context) error {
 
 	staff, err := service.GetStaff(ctx, ID)
 	if err != nil {
-		return c.JSON(http.StatusNoContent, err)
+		return c.JSON(http.StatusNoContent, err.Error())
 	}
 
 	return c.JSON(http.StatusOK, staff)
@@ -74,7 +74,7 @@ func GetAllStaff(c echo.Context) error {
 
 	pagedStaff, err := service.GetAllStaff(ctx, query)
 	if err != nil {
-		return c.JSON(http.StatusNoContent, err)
+		return c.JSON(http.StatusNoContent, err.Error())
 	}
 
 	return c.JSON(http.StatusOK, pagedStaff)

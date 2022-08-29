@@ -19,7 +19,7 @@ func CreateDepartment(c echo.Context) error {
 
 	createdDepartment, err := service.CreateDepartment(ctx, payload)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, err)
+		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
 	return c.JSON(http.StatusCreated, createdDepartment)
@@ -35,7 +35,7 @@ func UpdateDepartment(c echo.Context) error {
 
 	updatedDepartment, err := service.UpdateDepartment(ctx, ID, payload)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, err)
+		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
 	return c.JSON(http.StatusOK, updatedDepartment)
@@ -47,7 +47,7 @@ func DeleteDepartment(c echo.Context) error {
 
 	err := service.DeleteDepartment(ctx, ID)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, err)
+		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
 	return c.JSON(http.StatusNoContent, error.Error(errors.New("Delete Department successfully")))
@@ -60,7 +60,7 @@ func GetDepartment(c echo.Context) error {
 	department, err := service.GetDepartment(ctx, ID)
 
 	if err != nil {
-		return c.JSON(http.StatusNoContent, err)
+		return c.JSON(http.StatusNoContent, err.Error())
 	}
 
 	return c.JSON(http.StatusOK, department)
@@ -75,7 +75,7 @@ func GetAllDepartment(c echo.Context) error {
 
 	pagedDepartment, err := service.GetAllDepartment(ctx, query)
 	if err != nil {
-		return c.JSON(http.StatusNoContent, err)
+		return c.JSON(http.StatusNoContent, err.Error())
 	}
 
 	return c.JSON(http.StatusOK, pagedDepartment)

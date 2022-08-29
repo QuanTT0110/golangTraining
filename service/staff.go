@@ -3,7 +3,6 @@ package service
 import (
 	"context"
 	"errors"
-	"fmt"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"quanlyhoso/dao"
 	"quanlyhoso/model/payload"
@@ -13,9 +12,13 @@ import (
 )
 
 func CreateStaff(ctx context.Context, payload payload.StaffCreatePayLoad) (res response.StaffResponse, err error) {
+	if isExistEmailStaff(ctx, payload.Email) {
+		return res, errors.New("Email is existing")
+	}
+
 	departmentID, _ := primitive.ObjectIDFromHex(payload.DepartmentID)
 	findDepartment, _ := GetDepartment(ctx, departmentID)
-	fmt.Println(findDepartment)
+
 	payload.DepartmentID = findDepartment.ID
 	payload.Password, _ = util.HashPassword(payload.Password)
 
@@ -42,6 +45,10 @@ func CreateStaff(ctx context.Context, payload payload.StaffCreatePayLoad) (res r
 }
 
 func UpdateStaff(ctx context.Context, id primitive.ObjectID, payload payload.StaffCreatePayLoad) (res response.StaffResponse, err error) {
+	if isExistEmailStaff(ctx, payload.Email) {
+		return res, errors.New("Email is existing")
+	}
+
 	staff := payload.ConvertToBSON()
 	updatedStaff, err := dao.UpdateStaff(ctx, id, staff)
 
@@ -110,6 +117,14 @@ func GetAllStaff(ctx context.Context, query query.StaffFindAllQuery) (res []resp
 	}
 
 	return res, err
+}
+
+func isExistEmailStaff(ctx context.Context, email string) bool {
+	var rs, err = dao.FindByEmail(ctx, email)
+	if err != nil || rs.ID.IsZero() {
+		return false
+	}
+	return true
 }
 
 func GetStaffByEmail(ctx context.Context, email string) (res response.StaffResponse, err error) {
