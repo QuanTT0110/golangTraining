@@ -86,7 +86,7 @@ func CheckStaffExistedByID(next echo.HandlerFunc) echo.HandlerFunc {
 
 		staff, _ := dao.GetStaff(ctx, staffID)
 		if staff.ID.IsZero() {
-			return c.JSON(http.StatusNoContent, error.Error(errors.New("Staff not found")))
+			return c.JSON(http.StatusNotFound, error.Error(errors.New("Staff not found")))
 		}
 
 		c.Set("staff", staff)
