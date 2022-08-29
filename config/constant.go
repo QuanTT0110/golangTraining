@@ -5,11 +5,8 @@ type Database struct {
 	Name string
 }
 
-// ENV .env struct
 type ENV struct {
-	// App port
-	AppPort string
-
-	// Database
-	Database Database
+	AppPort    string
+	Database   Database
+	SigningKey string
 }

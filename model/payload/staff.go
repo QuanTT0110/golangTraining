@@ -8,17 +8,17 @@ import (
 )
 
 type StaffCreatePayLoad struct {
-	ID           string `json:"_id"`
+	ID           string `json:"_id" bson:"id"`
 	Name         string `json:"name" form:"name"`
 	Email        string `json:"email" form:"email"`
 	Password     string `json:"password,omitempty" form:"password"`
-	DepartmentID string `json:"department" xml:"department" bson:"department"`
+	DepartmentID string `json:"department" form:"department"`
 }
 
-type StaffLoginPayLoad struct {
-	Email    string `json:"email" form:"email"`
-	Password string `json:"password" form:"password"`
-}
+//type StaffLoginPayLoad struct {
+//	Email    string `json:"email" form:"email"`
+//	Password string `json:"password" form:"password"`
+//}
 
 func (payload StaffCreatePayLoad) ValidateCreateStaff() error {
 	return validation.ValidateStruct(&payload,

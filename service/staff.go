@@ -15,7 +15,7 @@ import (
 func CreateStaff(ctx context.Context, payload payload.StaffCreatePayLoad) (res response.StaffResponse, err error) {
 	departmentID, _ := primitive.ObjectIDFromHex(payload.DepartmentID)
 	findDepartment, _ := GetDepartment(ctx, departmentID)
-	fmt.Println(findDepartment.ID)
+	fmt.Println(findDepartment)
 	payload.DepartmentID = findDepartment.ID
 	payload.Password, _ = util.HashPassword(payload.Password)
 
@@ -32,7 +32,9 @@ func CreateStaff(ctx context.Context, payload payload.StaffCreatePayLoad) (res r
 		Email:    createdStaff.Email,
 		Password: "",
 		Department: response.DepartmentResponse{
-			ID: findDepartment.ID,
+			ID:      findDepartment.ID,
+			Name:    findDepartment.Name,
+			Address: findDepartment.Address,
 		},
 	}
 
@@ -105,6 +107,26 @@ func GetAllStaff(ctx context.Context, query query.StaffFindAllQuery) (res []resp
 			Password:   value.Password,
 			Department: department,
 		})
+	}
+
+	return res, err
+}
+
+func GetStaffByEmail(ctx context.Context, email string) (res response.StaffResponse, err error) {
+	staff, err := dao.FindByEmail(ctx, email)
+
+	if err != nil {
+		return res, errors.New("Staff not found")
+	}
+
+	res = response.StaffResponse{
+		ID:       staff.ID.Hex(),
+		Name:     staff.Name,
+		Email:    staff.Email,
+		Password: staff.Password,
+		Department: response.DepartmentResponse{
+			ID: staff.DepartmentID.Hex(),
+		},
 	}
 
 	return res, err

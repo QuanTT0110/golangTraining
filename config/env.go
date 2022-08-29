@@ -6,14 +6,14 @@ import (
 	"os"
 )
 
-var env ENV
+var Env ENV
 
 func GetEnvString(key string) string {
 	return os.Getenv(key)
 }
 
 func GetEnv() *ENV {
-	return &env
+	return &Env
 }
 
 func InitDotEnv() {
@@ -24,9 +24,11 @@ func InitDotEnv() {
 
 	appPort := GetEnvString("SERVER_PORT")
 	database := Database{URI: GetEnvString("MONGODB_URL"), Name: GetEnvString("MONGODB_DATABASE")}
+	signingKey := GetEnvString("SIGNING_KEY")
 
-	env = ENV{
-		AppPort:  appPort,
-		Database: database,
+	Env = ENV{
+		AppPort:    appPort,
+		Database:   database,
+		SigningKey: signingKey,
 	}
 }

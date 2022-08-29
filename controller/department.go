@@ -57,6 +57,7 @@ func GetDepartment(c echo.Context) error {
 	var ID, _ = primitive.ObjectIDFromHex(c.Param("id"))
 
 	department, err := service.GetDepartment(ctx, ID)
+
 	if err != nil {
 		return c.JSON(http.StatusNoContent, err)
 	}

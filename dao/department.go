@@ -2,7 +2,6 @@ package dao
 
 import (
 	"context"
-	"fmt"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -51,7 +50,7 @@ func GetDepartment(ctx context.Context, id primitive.ObjectID) (existingDepartme
 	)
 
 	err = departmentCol.FindOne(ctx, filter).Decode(&existingDepartment)
-	fmt.Println(err)
+
 	return existingDepartment, err
 }
 

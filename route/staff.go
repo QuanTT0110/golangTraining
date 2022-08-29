@@ -9,6 +9,7 @@ import (
 func Staff(e *echo.Echo) {
 	staffs := e.Group("/staffs")
 
+	//staffs.Use(middleware.JWTWithConfig(permission.JWTConfig))
 	staffs.POST("", controller.CreateStaff, validation.CheckEmailExisted, validation.CreateStaff)
 	staffs.PUT("/:id", controller.UpdateStaff, validation.ValidateStaffID, validation.CheckStaffExistedByID, validation.CheckEmailExisted, validation.CreateStaff)
 	staffs.DELETE("/:id", controller.DeleteStaff, validation.ValidateStaffID, validation.CheckStaffExistedByID)
