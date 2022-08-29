@@ -4,7 +4,7 @@ import (
 	validation "github.com/go-ozzo/ozzo-validation"
 	"github.com/go-ozzo/ozzo-validation/is"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	"quanlyhoso/model"
+	"quanlyhoso/model/raw"
 )
 
 type DepartmentCreatePayLoad struct {
@@ -13,8 +13,8 @@ type DepartmentCreatePayLoad struct {
 	Address string `json:"address" form:"address"`
 }
 
-func (payload DepartmentCreatePayLoad) ConvertToBSON() model.Department {
-	result := model.Department{
+func (payload DepartmentCreatePayLoad) ConvertToBSON() raw.Department {
+	result := raw.Department{
 		ID:      primitive.NewObjectID(),
 		Name:    payload.Name,
 		Address: payload.Address,

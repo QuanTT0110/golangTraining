@@ -4,7 +4,7 @@ import (
 	validation "github.com/go-ozzo/ozzo-validation"
 	"github.com/go-ozzo/ozzo-validation/is"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	"quanlyhoso/model"
+	"quanlyhoso/model/raw"
 )
 
 type StaffCreatePayLoad struct {
@@ -41,9 +41,9 @@ func (payload StaffCreatePayLoad) ValidateCreateStaff() error {
 	)
 }
 
-func (payload StaffCreatePayLoad) ConvertToBSON() model.Staff {
+func (payload StaffCreatePayLoad) ConvertToBSON() raw.Staff {
 	departmentID, _ := primitive.ObjectIDFromHex(payload.DepartmentID)
-	result := model.Staff{
+	result := raw.Staff{
 		ID:           primitive.NewObjectID(),
 		Name:         payload.Name,
 		Email:        payload.Email,

@@ -7,11 +7,11 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"log"
 	"quanlyhoso/database"
-	"quanlyhoso/model"
 	"quanlyhoso/model/query"
+	"quanlyhoso/model/raw"
 )
 
-func CreateDepartment(ctx context.Context, department model.Department) (model.Department, error) {
+func CreateDepartment(ctx context.Context, department raw.Department) (raw.Department, error) {
 	var (
 		departmentCol = database.DepartmentCol()
 	)
@@ -21,7 +21,7 @@ func CreateDepartment(ctx context.Context, department model.Department) (model.D
 	return department, err
 }
 
-func UpdateDepartment(ctx context.Context, id primitive.ObjectID, department model.Department) (model.Department, error) {
+func UpdateDepartment(ctx context.Context, id primitive.ObjectID, department raw.Department) (raw.Department, error) {
 	var (
 		departmentCol = database.DepartmentCol()
 		filter        = bson.D{{"_id", id}}
@@ -43,7 +43,7 @@ func DeleteDepartment(ctx context.Context, id primitive.ObjectID) error {
 	return err
 }
 
-func GetDepartment(ctx context.Context, id primitive.ObjectID) (existingDepartment model.Department, err error) {
+func GetDepartment(ctx context.Context, id primitive.ObjectID) (existingDepartment raw.Department, err error) {
 	var (
 		departmentCol = database.DepartmentCol()
 		filter        = bson.D{{"_id", id}}
@@ -54,7 +54,7 @@ func GetDepartment(ctx context.Context, id primitive.ObjectID) (existingDepartme
 	return existingDepartment, err
 }
 
-func GetAllDepartment(ctx context.Context, query query.DepartmentFindAllQuery) (departments []model.Department, err error) {
+func GetAllDepartment(ctx context.Context, query query.DepartmentFindAllQuery) (departments []raw.Department, err error) {
 	var departmentCol = database.DepartmentCol()
 	var filter = bson.M{}
 
@@ -70,7 +70,7 @@ func GetAllDepartment(ctx context.Context, query query.DepartmentFindAllQuery) (
 		return departments, err
 	}
 	for result.Next(context.Background()) {
-		var department model.Department
+		var department raw.Department
 		err = result.Decode(&department)
 		if err != nil {
 			log.Fatal(err)

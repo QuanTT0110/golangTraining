@@ -7,11 +7,11 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"log"
 	"quanlyhoso/database"
-	"quanlyhoso/model"
 	"quanlyhoso/model/query"
+	"quanlyhoso/model/raw"
 )
 
-func CreateStaff(ctx context.Context, staff model.Staff) (model.Staff, error) {
+func CreateStaff(ctx context.Context, staff raw.Staff) (raw.Staff, error) {
 
 	var (
 		staffCol = database.StaffCol()
@@ -22,7 +22,7 @@ func CreateStaff(ctx context.Context, staff model.Staff) (model.Staff, error) {
 	return staff, err
 }
 
-func UpdateStaff(ctx context.Context, id primitive.ObjectID, staff model.Staff) (model.Staff, error) {
+func UpdateStaff(ctx context.Context, id primitive.ObjectID, staff raw.Staff) (raw.Staff, error) {
 	var (
 		staffCol = database.StaffCol()
 		filter   = bson.D{{"_id", id}}
@@ -44,7 +44,7 @@ func DeleteStaff(ctx context.Context, id primitive.ObjectID) error {
 	return err
 }
 
-func GetStaff(ctx context.Context, id primitive.ObjectID) (existingStaff model.Staff, err error) {
+func GetStaff(ctx context.Context, id primitive.ObjectID) (existingStaff raw.Staff, err error) {
 	var (
 		staffCol = database.StaffCol()
 		filter   = bson.D{{"_id", id}}
@@ -55,7 +55,7 @@ func GetStaff(ctx context.Context, id primitive.ObjectID) (existingStaff model.S
 	return existingStaff, err
 }
 
-func GetAllStaff(ctx context.Context, query query.StaffFindAllQuery) (staffs []model.Staff, err error) {
+func GetAllStaff(ctx context.Context, query query.StaffFindAllQuery) (staffs []raw.Staff, err error) {
 	var staffCol = database.StaffCol()
 	var filter = bson.M{}
 
@@ -75,7 +75,7 @@ func GetAllStaff(ctx context.Context, query query.StaffFindAllQuery) (staffs []m
 		return staffs, err
 	}
 	for result.Next(context.Background()) {
-		var staff model.Staff
+		var staff raw.Staff
 		err = result.Decode(&staff)
 		if err != nil {
 			log.Fatal(err)
@@ -86,11 +86,11 @@ func GetAllStaff(ctx context.Context, query query.StaffFindAllQuery) (staffs []m
 	return staffs, err
 }
 
-func FindByEmail(ctx context.Context, email string) (model.Staff, error) {
+func FindByEmail(ctx context.Context, email string) (raw.Staff, error) {
 	var (
 		staffCol      = database.StaffCol()
 		filter        = bson.D{{"email", email}}
-		existingStaff model.Staff
+		existingStaff raw.Staff
 	)
 
 	err := staffCol.FindOne(ctx, filter).Decode(&existingStaff)

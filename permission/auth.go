@@ -22,10 +22,10 @@ var JWTConfig = middleware.JWTConfig{
 			}
 			return []byte(config.Env.SigningKey), nil
 		}
-		if !strings.HasPrefix(auth, "Bearer ") {
+		if !strings.HasPrefix(auth, "Bearer") {
 			return nil, errors.New("Invalid token")
 		}
-		var splitAuth = strings.Split(auth, "Bearer ")
+		var splitAuth = strings.Split(auth, "Bearer")
 		token, err := jwt.Parse(splitAuth[1], keyFunc)
 		if err != nil {
 			return nil, err
